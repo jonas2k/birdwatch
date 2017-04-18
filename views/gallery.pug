@@ -1,0 +1,9 @@
+extends layout
+
+block content
+    .jumbotron.container-fluid#gallery-container
+        each image in images
+            .col-sm-2.col-md-3
+                a.thumbnail(href=image)
+                    img(src=image)
+        
