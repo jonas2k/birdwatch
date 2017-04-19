@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var socket_io = require("socket.io");
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -13,6 +14,8 @@ var Watcher = require('./watcher');
 var PicTaker = require('./pictaker');
 
 var app = express();
+
+app.set('io', socket_io());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -28,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
 app.use(express.static(path.join(__dirname, 'node_modules/jquery/dist')));
+app.use(express.static(path.join(__dirname, 'node_modules/socket.io-client/dist')));
 
 app.use('/', index);
 app.use('/users', users);
@@ -40,8 +44,27 @@ var watcher = new Watcher();
 const watcherCallback = () => {
   picTaker.takePicture();
 };
-watcher.on('Movement', watcherCallback);
+// watcher.on('Movement', watcherCallback);
 watcher.watch();
+
+//socket.io
+var io = app.settings.io;
+io.on("connection", (socket) => {
+  console.log("User connected");
+  socket.on('disconnect', function () {
+    console.log('user disconnected');
+  });
+
+  socket.on("ToggleSensors", (socket) => {
+    if (watcher.eventNames().indexOf('Movement') > -1) {
+      watcher.removeListener('Movement', watcherCallback);
+      console.log("Watcher listener removed");
+    } else {
+      watcher.on('Movement', watcherCallback);
+      console.log("Watcher listener added");
+    }
+  });
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -60,13 +83,5 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-function addWatcherListener() {
-  watcher.on('Movement', watcherCallback);
-}
-
-function removeWatcherListener() {
-  watcher.removeListener('Movement', watcherCallback);
-}
 
 module.exports = app;

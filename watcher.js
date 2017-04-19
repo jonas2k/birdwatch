@@ -30,28 +30,3 @@ class Watcher extends EventEmitter {
 }
 
 module.exports = Watcher;
-
-// var events = require('events');
-// var Gpio = require('onoff').Gpio;
-// pir = new Gpio(17, 'in', 'rising');
-
-// function Watcher() {
-//     var that;
-//     events.EventEmitter.call(this);
-
-//     this.init = function () {
-//         that = this;
-//         console.log("Contructor");
-
-//         pir.watch(function (err, value) {
-//             if (err) {
-//                 throw err;
-//             }
-//             that.emit('Event');
-//         });
-//     }
-// };
-
-// Watcher.prototype.__proto__ = events.EventEmitter.prototype;
-
-// module.exports = Watcher;

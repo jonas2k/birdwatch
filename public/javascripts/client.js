@@ -1,11 +1,10 @@
 window.onload = function() {
+    var socket = io();
     var sensorButton = document.getElementById("sensorButton");
 
     sensorButton.onclick = () => {
-
+        socket.emit("ToggleSensors");
         swapColor(sensorButton);
-        //TODO: toogle event listener in app.js
-        //http://stackoverflow.com/questions/14951251/how-to-call-node-js-server-side-method-from-javascript
     };
 }
 
