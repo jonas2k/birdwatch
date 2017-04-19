@@ -18,10 +18,10 @@ class Watcher extends EventEmitter {
             if(!coolDown) {
                 coolDown = true;
                 this.emit('Movement');
-                console.log("Starting cooldown")
+                console.log("Starting cooldown");
                 setTimeout(() => {
                     coolDown = false;
-                    console.log("Ending cooldown")
+                    console.log("Ending cooldown");
                 }, coolDownTime)
             }
 

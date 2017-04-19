@@ -12,6 +12,9 @@ var gallery = require('./routes/gallery');
 
 var Watcher = require('./watcher');
 var PicTaker = require('./pictaker');
+var picTaker = new PicTaker();
+var watcher = new Watcher();
+var watcherIsActive = false;
 
 var app = express();
 
@@ -38,29 +41,32 @@ app.use('/users', users);
 app.use('/gallery', gallery);
 
 //watcher
-var picTaker = new PicTaker();
-var watcher = new Watcher();
 
 const watcherCallback = () => {
   picTaker.takePicture();
 };
-// watcher.on('Movement', watcherCallback);
 watcher.watch();
 
 //socket.io
 var io = app.settings.io;
 io.on("connection", (socket) => {
-  console.log("User connected");
-  socket.on('disconnect', function () {
-    console.log('user disconnected');
+  // console.log("User connected");
+  // socket.on('disconnect', function () {
+  //   console.log('user disconnected');
+  // });
+
+  socket.on("getWatcherState", () => {
+    socket.emit("returnWatcherState", { watcherState: watcherIsActive });
   });
 
   socket.on("ToggleSensors", (socket) => {
-    if (watcher.eventNames().indexOf('Movement') > -1) {
+    if (watcherIsActive) {
       watcher.removeListener('Movement', watcherCallback);
+      watcherIsActive = false;
       console.log("Watcher listener removed");
     } else {
       watcher.on('Movement', watcherCallback);
+      watcherIsActive = true;
       console.log("Watcher listener added");
     }
   });
