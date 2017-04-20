@@ -4,7 +4,7 @@ var encoding = "jpg";
 
 var camera = new RaspiCam({
     mode: "photo",
-    output: "./photos/",
+    output: "./public/photos/",
     encoding: encoding,
     timeout: 500
 });

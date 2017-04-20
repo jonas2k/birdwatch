@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var socket_io = require("socket.io");
+var socket_io = require('socket.io');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -14,18 +14,22 @@ var Watcher = require('./watcher');
 var PicTaker = require('./pictaker');
 var picTaker = new PicTaker();
 var watcher = new Watcher();
-var watcherIsActive = false;
 
 var app = express();
 
 app.set('io', socket_io());
+app.locals.isWatcherActive = false;
+
+if (app.get('env') === 'development') {
+  app.locals.pretty = true;
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'birdwatch.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -50,23 +54,15 @@ watcher.watch();
 //socket.io
 var io = app.settings.io;
 io.on("connection", (socket) => {
-  // console.log("User connected");
-  // socket.on('disconnect', function () {
-  //   console.log('user disconnected');
-  // });
-
-  socket.on("getWatcherState", () => {
-    socket.emit("returnWatcherState", { watcherState: watcherIsActive });
-  });
 
   socket.on("ToggleSensors", (socket) => {
-    if (watcherIsActive) {
+    if (app.locals.isWatcherActive) {
       watcher.removeListener('Movement', watcherCallback);
-      watcherIsActive = false;
+      app.locals.isWatcherActive = false;
       console.log("Watcher listener removed");
     } else {
       watcher.on('Movement', watcherCallback);
-      watcherIsActive = true;
+      app.locals.isWatcherActive = true;
       console.log("Watcher listener added");
     }
   });

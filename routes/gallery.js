@@ -15,7 +15,7 @@ router.get('/', function (req, res, next) {
         return path.join("/photos/", file);
     }).reverse();
 
-    res.render('gallery', { title: 'BirdWatch', eins: 'eins', images: images });
+    res.render('gallery', { title: 'BirdWatch', images: images });
 });
 
 module.exports = router;

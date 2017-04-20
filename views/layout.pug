@@ -19,6 +19,9 @@ html
             li
               a(href='/gallery') Gallery
             li
-              button#sensorButton(type="button" class="btn btn-danger navbar-btn") Toggle Sensors
+              if isWatcherActive
+                button#sensorButton(type="button" class="btn btn-success navbar-btn") Toggle Sensors
+              else
+                button#sensorButton(type="button" class="btn btn-danger navbar-btn") Toggle Sensors
     .container
       block content

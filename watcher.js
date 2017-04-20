@@ -2,7 +2,7 @@ const EventEmitter = require('events');
 var Gpio = require('onoff').Gpio;
 var pir = new Gpio(17, 'in', 'rising');
 var coolDown = false;
-const coolDownTime = 10000;
+const coolDownTime = 15000;
 
 class Watcher extends EventEmitter {
 
@@ -15,7 +15,7 @@ class Watcher extends EventEmitter {
             if (err) {
                 throw err;
             }
-            if(!coolDown) {
+            if(!coolDown && value === 1) {
                 coolDown = true;
                 this.emit('Movement');
                 console.log("Starting cooldown");

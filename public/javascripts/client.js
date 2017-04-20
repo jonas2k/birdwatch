@@ -1,12 +1,16 @@
 window.onload = function () {
     var socket = io();
 
-    socket.on("connect", () => {
-        socket.emit("getWatcherState");
-        socket.on("returnWatcherState", (state) => {
-            state.watcherState ? setSensorButtonActive() : setSensorButtonInactive();
-        })
-    });
+    // if(watcherState) {
+    //     watcherState ? setSensorButtonActive() : setSensorButtonInactive();
+    // }
+
+    // socket.on("connect", () => {
+    //     socket.emit("getWatcherState");
+    //     socket.on("returnWatcherState", (state) => {
+    //         state.watcherState ? setSensorButtonActive() : setSensorButtonInactive();
+    //     })
+    // });
 
     var sensorButton = document.getElementById("sensorButton");
 
