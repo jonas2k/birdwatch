@@ -10,18 +10,6 @@ html
     script(src='/socket.io.min.js')
     meta(name='viewport' content='width=device-width, initial-scale=1')
   body
-    .container
-      nav.navbar.navbar-inverse
-        .container-fluid
-          .navbar-header
-            a.navbar-brand(href='/') #{title}
-          ul.nav.navbar-nav
-            li
-              a(href='/gallery') Gallery
-            li
-              if isWatcherActive
-                button#sensorButton(type="button" class="btn btn-success navbar-btn") Toggle Sensors
-              else
-                button#sensorButton(type="button" class="btn btn-danger navbar-btn") Toggle Sensors
+    include navbar.pug
     .container
       block content

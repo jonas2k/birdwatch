@@ -1,16 +1,5 @@
-window.onload = function () {
-    var socket = io();
-
-    // if(watcherState) {
-    //     watcherState ? setSensorButtonActive() : setSensorButtonInactive();
-    // }
-
-    // socket.on("connect", () => {
-    //     socket.emit("getWatcherState");
-    //     socket.on("returnWatcherState", (state) => {
-    //         state.watcherState ? setSensorButtonActive() : setSensorButtonInactive();
-    //     })
-    // });
+window.addEventListener('load', () => {
+    socket = io();
 
     var sensorButton = document.getElementById("sensorButton");
 
@@ -18,21 +7,7 @@ window.onload = function () {
         socket.emit("ToggleSensors");
         swapColor(sensorButton);
     };
-}
-
-function setSensorButtonActive() {
-    if (sensorButton.classList.contains("btn-danger")) {
-        sensorButton.classList.remove("btn-danger");
-        sensorButton.classList.add("btn-success");
-    }
-}
-
-function setSensorButtonInactive() {
-    if (sensorButton.classList.contains("btn-success")) {
-        sensorButton.classList.remove("btn-success");
-        sensorButton.classList.add("btn-danger");
-    }
-}
+})
 
 function swapColor(sensorButton) {
     if (sensorButton.classList.contains("btn-danger")) {
@@ -42,4 +17,4 @@ function swapColor(sensorButton) {
         sensorButton.classList.remove("btn-success");
         sensorButton.classList.add("btn-danger");
     }
-}
+} 

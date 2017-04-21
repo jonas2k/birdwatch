@@ -7,8 +7,8 @@ var bodyParser = require('body-parser');
 var socket_io = require('socket.io');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 var gallery = require('./routes/gallery');
+var takepicture = require('./routes/takepicture');
 
 var Watcher = require('./watcher');
 var PicTaker = require('./pictaker');
@@ -29,7 +29,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
-app.use(favicon(path.join(__dirname, 'public', 'birdwatch.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'images/birdwatch.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -41,8 +41,8 @@ app.use(express.static(path.join(__dirname, 'node_modules/jquery/dist')));
 app.use(express.static(path.join(__dirname, 'node_modules/socket.io-client/dist')));
 
 app.use('/', index);
-app.use('/users', users);
 app.use('/gallery', gallery);
+app.use('/takepicture', takepicture);
 
 //watcher
 
@@ -54,7 +54,6 @@ watcher.watch();
 //socket.io
 var io = app.settings.io;
 io.on("connection", (socket) => {
-
   socket.on("ToggleSensors", (socket) => {
     if (app.locals.isWatcherActive) {
       watcher.removeListener('Movement', watcherCallback);
@@ -65,6 +64,15 @@ io.on("connection", (socket) => {
       app.locals.isWatcherActive = true;
       console.log("Watcher listener added");
     }
+  });
+  socket.on("savePicture", () => {
+    var camera = picTaker.takePicture();
+    camera.once("processingDone", function (data) {
+      socket.emit("savePictureReturn", { filename: data.filename });
+    });
+  });
+  socket.on("liveView", () => {
+
   });
 });
 

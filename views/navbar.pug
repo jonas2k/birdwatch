@@ -1,0 +1,15 @@
+.container
+    nav.navbar.navbar-inverse
+        .container-fluid
+            .navbar-header
+                a.navbar-brand(href='/') #{title}
+            ul.nav.navbar-nav
+                li
+                    a(href='/gallery') Gallery
+                li
+                    a(href='/takepicture') Take picture
+                li
+                    if isWatcherActive
+                        button#sensorButton(type="button" class="btn btn-success navbar-btn") Toggle Sensors
+                    else
+                        button#sensorButton(type="button" class="btn btn-danger navbar-btn") Toggle Sensors
