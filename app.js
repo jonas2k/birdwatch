@@ -45,9 +45,9 @@ app.use('/gallery', gallery);
 app.use('/takepicture', takepicture);
 
 //watcher
-
 const watcherCallback = () => {
   picTaker.takePicture();
+  app.emit("RefreshGallery");
 };
 watcher.watch();
 
@@ -75,6 +75,9 @@ io.on("connection", (socket) => {
     picTaker.takeTempPicture((livePic) => {
       socket.emit("liveViewReturn", { image: livePic });
     });
+  });
+  app.on("RefreshGallery", () => {
+    socket.emit("RefreshGalleryView");
   });
 });
 
