@@ -19,4 +19,9 @@ window.addEventListener('load', () => {
         pictureViewImg.src = imagePath;
         $(pictureViewDiv).removeClass('hidden');
     });
+
+    socket.on("liveViewReturn", (data) => {
+        pictureViewImg.src = "data:image/jpeg;base64," + data.image;
+        $(pictureViewDiv).removeClass('hidden');
+    });
 })

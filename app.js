@@ -67,12 +67,14 @@ io.on("connection", (socket) => {
   });
   socket.on("savePicture", () => {
     var camera = picTaker.takePicture();
-    camera.once("processingDone", function (data) {
+    camera.once("processingDone", (data) => {
       socket.emit("savePictureReturn", { filename: data.filename });
     });
   });
   socket.on("liveView", () => {
-
+    picTaker.takeTempPicture((livePic) => {
+      socket.emit("liveViewReturn", { image: livePic });
+    });
   });
 });
 

@@ -1,5 +1,6 @@
 const EventEmitter = require('events');
 var RaspiCam = require("raspicam");
+var Campi = require('campi');
 var encoding = "jpg";
 var filename;
 
@@ -10,8 +11,11 @@ var camera = new RaspiCam({
     mode: "photo",
     output: "./public/photos/",
     encoding: encoding,
-    timeout: 500
+    timeout: 500,
+    width: 1920,
+    height: 1080
 });
+var campi = new Campi();
 
 class PicTaker extends EventEmitter {
 
@@ -20,14 +24,28 @@ class PicTaker extends EventEmitter {
     }
 
     takePicture() {
-        filename =  Date.now() + ".jpg";
+        filename = Date.now() + ".jpg";
         camera.set("output", "./public/photos/" + filename);
         camera.start();
         return camera;
     }
 
-    takeTempPicture() {
-        
+    takeTempPicture(callback) {
+        campi.getImageAsStream({ timeout: 1, width: 640, height: 480 }, (err, stream) => {
+            if (err) {
+                throw err;
+            }
+
+            const chunks = [];
+
+            stream.on("data", (chunk) => {
+                chunks.push(chunk);
+            });
+
+            stream.on("end", () => {
+                callback(Buffer.concat(chunks).toString("base64"));
+            });
+        });
     }
 }
 
