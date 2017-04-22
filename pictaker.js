@@ -1,21 +1,23 @@
 const EventEmitter = require('events');
+var fs = require('fs');
 var RaspiCam = require("raspicam");
 var Campi = require('campi');
+var RaspiSensors = require('raspi-sensors');
+var PicProcessor = require('./picprocessor');
+
 var encoding = "jpg";
 var filename;
 
-var fs = require('fs');
-var gm = require('gm');
-
 var camera = new RaspiCam({
     mode: "photo",
-    output: "./public/photos/",
+    output: "./workdir/",
     encoding: encoding,
     timeout: 500,
     width: 1920,
     height: 1080
 });
 var campi = new Campi();
+var picProcessor = new PicProcessor(camera);
 
 class PicTaker extends EventEmitter {
 
@@ -25,7 +27,7 @@ class PicTaker extends EventEmitter {
 
     takePicture() {
         filename = Date.now() + ".jpg";
-        camera.set("output", "./public/photos/" + filename);
+        camera.set("output", "./workdir/" + filename);
         camera.start();
         return camera;
     }
@@ -55,12 +57,13 @@ camera.on("start", function (err, timestamp) {
 
 camera.on("read", function (err, timestamp, filename) {
     console.log("photo image captured with filename: " + filename);
-    // gm mit filename 
 });
 
 camera.on("exit", function (timestamp) {
     console.log("photo child process has exited at " + timestamp);
-    camera.emit("processingDone", { filename: filename });
+    fs.rename("./workdir/" + filename, "./public/photos/" + filename, () => {
+        picProcessor.process(filename);
+    });
 });
 
 module.exports = PicTaker;

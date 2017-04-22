@@ -5,10 +5,12 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var socket_io = require('socket.io');
+var Utils = require('./utils');
 
 var index = require('./routes/index');
 var gallery = require('./routes/gallery');
 var takepicture = require('./routes/takepicture');
+
 
 var Watcher = require('./watcher');
 var PicTaker = require('./pictaker');
@@ -19,6 +21,7 @@ var app = express();
 
 app.set('io', socket_io());
 app.locals.isWatcherActive = false;
+app.locals.title = "BirdWatch"
 
 if (app.get('env') === 'development') {
   app.locals.pretty = true;
@@ -46,8 +49,10 @@ app.use('/takepicture', takepicture);
 
 //watcher
 const watcherCallback = () => {
-  picTaker.takePicture();
-  app.emit("RefreshGallery");
+  var camera = picTaker.takePicture();
+  camera.once("processingDone", () => {
+    app.settings.io.emit("RefreshGalleryView", Utils.getImagesFromPhotosDir());
+  });
 };
 watcher.watch();
 
@@ -69,15 +74,13 @@ io.on("connection", (socket) => {
     var camera = picTaker.takePicture();
     camera.once("processingDone", (data) => {
       socket.emit("savePictureReturn", { filename: data.filename });
+      io.emit("RefreshGalleryView", Utils.getImagesFromPhotosDir());
     });
   });
   socket.on("liveView", () => {
     picTaker.takeTempPicture((livePic) => {
       socket.emit("liveViewReturn", { image: livePic });
     });
-  });
-  app.on("RefreshGallery", () => {
-    socket.emit("RefreshGalleryView");
   });
 });
 
