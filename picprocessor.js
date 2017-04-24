@@ -2,6 +2,7 @@ const EventEmitter = require('events');
 var RaspiSensors = require('raspi-sensors');
 var gm = require('gm');
 var _ = require('lodash');
+var Utils = require('./utils');
 
 var DHT22 = new RaspiSensors.Sensor({
     type: "DHT22",
@@ -19,8 +20,7 @@ class PicProcessor extends EventEmitter {
 
     process(filename) {
 
-        var date = new Date();
-        annotation = date.toLocaleDateString() + " " + date.toLocaleTimeString() + " | ";
+        annotation = Utils.getFormattedDateString();
         var finished = _.after(2, () => {
             return this.finalize(filename);
         });
@@ -29,16 +29,18 @@ class PicProcessor extends EventEmitter {
             if (err) {
                 throw err;
             }
-            annotation += (data.type + "=" + data.value + data.unit_display + " ");
+            annotation += (" | " + data.type + "=" + Utils.round(data.value) + data.unit_display);
             finished();
         });
     }
 
     finalize(filename) {
         gm("./public/photos/" + filename)
-            .stroke("#ffffff")
-            .font("Helvetica.ttf", 12)
-            .drawText(30, 20, annotation)
+            .fill("white")
+            .stroke("none")
+            .font("Helvetica.ttf", 25)
+            .box("red")
+            .drawText(30, 20, annotation, "SouthEast")
             .write("./public/photos/" + filename, (err) => {
                 if (err) {
                     throw err;

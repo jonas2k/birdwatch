@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var time = require('time');
 
 class Utils {
     static getImagesFromPhotosDir() {
@@ -13,6 +14,15 @@ class Utils {
         }).reverse();
 
         return images;
+    }
+
+    static getFormattedDateString() {
+        var date = new time.Date().setTimezone('Europe/Berlin');
+        return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    }
+
+    static round(value) {
+        return Math.round(value * 100) / 100;
     }
 }
 

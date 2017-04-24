@@ -2,8 +2,8 @@ const EventEmitter = require('events');
 var fs = require('fs');
 var RaspiCam = require("raspicam");
 var Campi = require('campi');
-var RaspiSensors = require('raspi-sensors');
 var PicProcessor = require('./picprocessor');
+var LedController = require('./ledcontroller');
 
 var encoding = "jpg";
 var filename;
@@ -18,6 +18,7 @@ var camera = new RaspiCam({
 });
 var campi = new Campi();
 var picProcessor = new PicProcessor(camera);
+var led = new LedController(8);
 
 class PicTaker extends EventEmitter {
 
@@ -53,6 +54,7 @@ class PicTaker extends EventEmitter {
 
 camera.on("start", function (err, timestamp) {
     console.log("photo started at " + timestamp);
+    led.turnOn();
 });
 
 camera.on("read", function (err, timestamp, filename) {
@@ -64,6 +66,7 @@ camera.on("exit", function (timestamp) {
     fs.rename("./workdir/" + filename, "./public/photos/" + filename, () => {
         picProcessor.process(filename);
     });
+    led.turnOff();
 });
 
 module.exports = PicTaker;

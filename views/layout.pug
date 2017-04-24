@@ -1,15 +1,15 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/bootstrap.min.css')
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    script(src='/jquery.min.js')
-    script(src='/bootstrap.min.js')
-    script(src='/javascripts/client.js')
-    script(src='/socket.io.min.js')
-    meta(name='viewport' content='width=device-width, initial-scale=1')
-  body
-    include navbar.pug
-    .container
-      block content
+	head
+		title= title
+		link(rel='stylesheet', href='/bootstrap.min.css')
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		script(src='/jquery.min.js')
+		script(src='/bootstrap.min.js')
+		script(src='/javascripts/client.js')
+		script(src='/socket.io.min.js')
+		meta(name='viewport' content='width=device-width, initial-scale=1')
+	body
+		include navbar.pug
+		.container
+			block content

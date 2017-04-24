@@ -11,7 +11,6 @@ var index = require('./routes/index');
 var gallery = require('./routes/gallery');
 var takepicture = require('./routes/takepicture');
 
-
 var Watcher = require('./watcher');
 var PicTaker = require('./pictaker');
 var picTaker = new PicTaker();
