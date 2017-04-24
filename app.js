@@ -81,6 +81,9 @@ io.on("connection", (socket) => {
       socket.emit("liveViewReturn", { image: livePic });
     });
   });
+  socket.on("tweetPic", (data) => {
+    console.log("Do tweet using"+data.image);
+  })
 });
 
 // catch 404 and forward to error handler
