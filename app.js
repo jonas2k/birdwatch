@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var socket_io = require('socket.io');
 var Utils = require('./utils');
+var TwitterClient = require('./twitterclient');
 
 var index = require('./routes/index');
 var gallery = require('./routes/gallery');
@@ -15,6 +16,7 @@ var Watcher = require('./watcher');
 var PicTaker = require('./pictaker');
 var picTaker = new PicTaker();
 var watcher = new Watcher();
+var twitterClient = new TwitterClient();
 
 var app = express();
 
@@ -82,7 +84,7 @@ io.on("connection", (socket) => {
     });
   });
   socket.on("tweetPic", (data) => {
-    console.log("Do tweet using"+data.image);
+    twitterClient.tweet(data.image, data.message, socket);
   })
 });
 

@@ -12,7 +12,7 @@ window.addEventListener('load', () => {
                     $('<button />').attr({ id: value, value: value, class: "btn btn-xs twitterbutton", "data-image": value, "data-toggle": "modal", "data-target": "#tweetConfirmation" }).append(
                         $('<img />').attr({ class: "twitterbuttonimage", src: "images/twitter.png" })
                     )
-                )
+                    )
             )
         });
         setupModal();
@@ -21,10 +21,20 @@ window.addEventListener('load', () => {
 });
 
 function setupModal() {
-    $(".modal").on('show.bs.modal', function (event) {
+    $("#tweetConfirmation").on('show.bs.modal', function (event) {
         var image = $(event.relatedTarget).data('image');
         $(this).find('#modalSendButton').off("click").click(function () {
-            socket.emit("tweetPic", { image: image });
+            var message = $(this).parent().prev().find('#tweetText').val();
+            socket.emit("tweetPic", { image: image, message: message });
         });
+    });
+
+    socket.on("TweetReturn", function (data) {
+        if (data) {
+            $('#tweetSuccessLink').attr({ href: data });
+            $('#tweetSuccess').modal();
+        } else {
+            $('#tweetFailure').modal();
+        }
     });
 }
