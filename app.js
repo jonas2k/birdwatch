@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var socket_io = require('socket.io');
+var fs = require('fs');
 var Utils = require('./utils');
 var TwitterClient = require('./twitterclient');
 
@@ -27,6 +28,11 @@ app.locals.title = "BirdWatch"
 if (app.get('env') === 'development') {
   app.locals.pretty = true;
 }
+
+app.set('certificates', {
+  key: fs.readFileSync('./key.pem'),
+  cert: fs.readFileSync('./cert.pem')
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

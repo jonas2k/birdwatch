@@ -1,6 +1,7 @@
 public/photos
 .vscode
 workdir
+*.pem
 
 ### Node ###
 # Logs
