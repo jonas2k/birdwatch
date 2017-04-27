@@ -22,7 +22,7 @@ class TwitterClient {
                 console.log('caught error', err.stack)
             })
             .then((result) => {
-                if (result.data.hasOwnProperty('screen_name') && result.data.screen_name == result.data.screen_name) {
+                if (result.data.hasOwnProperty('screen_name') && result.data.screen_name == twitter_screen_name) {
                     if (!message) {
                         message = predefindedMessages[Math.floor(Math.random() * predefindedMessages.length)];
                     }
