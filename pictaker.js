@@ -18,7 +18,8 @@ var camera = new RaspiCam({
 });
 var campi = new Campi();
 var picProcessor = new PicProcessor(camera);
-var led = new LedController(8);
+var redLed = new LedController(8);
+var greenLed = new LedController(10);
 
 class PicTaker extends EventEmitter {
 
@@ -54,7 +55,7 @@ class PicTaker extends EventEmitter {
 
 camera.on("start", function (err, timestamp) {
     console.log("photo started at " + timestamp);
-    led.turnOn();
+    redLed.turnOn();
 });
 
 camera.on("read", function (err, timestamp, filename) {
@@ -66,7 +67,11 @@ camera.on("exit", function (timestamp) {
     fs.rename("./workdir/" + filename, "./public/photos/" + filename, () => {
         picProcessor.process(filename);
     });
-    led.turnOff();
+    redLed.turnOff();
+    greenLed.turnOn();
+    setTimeout(() => {
+        greenLed.turnOff();
+    }, 4000);
 });
 
 module.exports = PicTaker;
