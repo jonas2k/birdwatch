@@ -45,7 +45,7 @@ class TwitterClient {
                                         if (err) {
                                             console.log(err);
                                         }
-                                        var returnValue = data.id_str ? "http://twitter.com/" + twitter_screen_name + "/status/" + data.id_str : null;
+                                        var returnValue = data.id_str ? "http://twitter.com/" + data.user.screen_name + "/status/" + data.id_str : null;
                                         socket.emit("TweetReturn", returnValue);
                                     })
                                 }
