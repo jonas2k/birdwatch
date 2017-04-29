@@ -7,6 +7,11 @@ window.addEventListener('load', () => {
         socket.emit("ToggleSensors");
         swapColor(sensorButton);
     };
+    
+    $('#shutDown').click(() => {
+        socket.emit("ShutDown");
+    });
+
 })
 
 function swapColor(sensorButton) {

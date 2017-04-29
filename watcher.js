@@ -1,8 +1,9 @@
 const EventEmitter = require('events');
+var Constants = require('./constants');
 var Gpio = require('onoff').Gpio;
-var pir = new Gpio(17, 'in', 'rising');
+var pir = new Gpio(Constants.pirPin, 'in', 'rising');
 var coolDown = false;
-const coolDownTime = 15000;
+var coolDownTime = Constants.coolDownTime;
 
 class Watcher extends EventEmitter {
 
@@ -15,7 +16,7 @@ class Watcher extends EventEmitter {
             if (err) {
                 throw err;
             }
-            if(!coolDown && value === 1) {
+            if (!coolDown && value === 1) {
                 coolDown = true;
                 this.emit('Movement');
                 console.log("Starting cooldown");
@@ -28,5 +29,9 @@ class Watcher extends EventEmitter {
         }.bind(this));
     }
 }
+
+process.on('SIGINT', function () {
+    pir.unexport();
+});
 
 module.exports = Watcher;

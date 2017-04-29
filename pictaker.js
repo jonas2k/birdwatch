@@ -4,6 +4,7 @@ var RaspiCam = require("raspicam");
 var Campi = require('campi');
 var PicProcessor = require('./picprocessor');
 var LedController = require('./ledcontroller');
+var Constants = require('./constants');
 
 var encoding = "jpg";
 var filename;
@@ -18,8 +19,8 @@ var camera = new RaspiCam({
 });
 var campi = new Campi();
 var picProcessor = new PicProcessor(camera);
-var redLed = new LedController(8);
-var greenLed = new LedController(10);
+var redLed = new LedController(Constants.redLedPin);
+var greenLed = new LedController(Constants.greedLedPin);
 
 class PicTaker extends EventEmitter {
 

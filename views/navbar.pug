@@ -10,6 +10,9 @@
 					a(href='/takepicture') Take picture
 				li
 					if isWatcherActive
-						button#sensorButton(type="button" class="btn btn-success navbar-btn") Toggle Sensors
+						button.btn.btn-success.navbar-btn#sensorButton(type="button") Toggle Sensors
 					else
-						button#sensorButton(type="button" class="btn btn-danger navbar-btn") Toggle Sensors
+						button.btn.btn-danger.navbar-btn#sensorButton(type="button") Toggle Sensors
+			ul.nav.navbar-nav.navbar-right
+				li
+					button.btn.btn-link.navbar-btn#shutDown(type="button") Shutdown

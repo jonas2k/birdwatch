@@ -3,10 +3,11 @@ var RaspiSensors = require('raspi-sensors');
 var gm = require('gm');
 var _ = require('lodash');
 var Utils = require('./utils');
+var Constants = require('./constants');
 
 var DHT22 = new RaspiSensors.Sensor({
     type: "DHT22",
-    pin: 0X9
+    pin: Constants.DHT22Pin
 }, "temp sensor");
 
 var annotation;
