@@ -93,8 +93,9 @@ io.on("connection", (socket) => {
     twitterClient.tweet(data.image, data.message, socket);
   });
   socket.on("ShutDown", () => {
-    console.log("Shutting down...");
-    Utils.shutDown();
+    Utils.shutDown((output) => {
+      console.log(output);
+    });
   })
 });
 

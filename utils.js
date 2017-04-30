@@ -27,7 +27,7 @@ class Utils {
     }
 
     static shutDown(callback) {
-        exec('shutdown now', function (error, stdout, stderr) { callback(stdout); });
+        exec('sudo shutdown now', function (error, stdout, stderr) { callback(stdout); });
     }
 }
 
