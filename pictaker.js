@@ -15,8 +15,10 @@ var camera = new RaspiCam({
     encoding: encoding,
     timeout: 500,
     width: 1920,
-    height: 1080
+    height: 1080,
+    rotation: Constants.raspiCamRotation
 });
+
 var campi = new Campi();
 var picProcessor = new PicProcessor(camera);
 var redLed = new LedController(Constants.redLedPin);
@@ -36,7 +38,7 @@ class PicTaker extends EventEmitter {
     }
 
     takeTempPicture(callback) {
-        campi.getImageAsStream({ timeout: 1, width: 640, height: 480 }, (err, stream) => {
+        campi.getImageAsStream({ timeout: 1, width: 640, height: 480, rotation: Constants.campiRotation }, (err, stream) => {
             if (err) {
                 throw err;
             }
