@@ -13,7 +13,7 @@ var camera = new RaspiCam({
     mode: "photo",
     output: "./workdir/",
     encoding: encoding,
-    timeout: 500,
+    timeout: Constants.raspiCamDelay,
     width: 1920,
     height: 1080,
     rotation: Constants.raspiCamRotation
@@ -38,7 +38,7 @@ class PicTaker extends EventEmitter {
     }
 
     takeTempPicture(callback) {
-        campi.getImageAsStream({ timeout: 1, width: 640, height: 480, rotation: Constants.campiRotation }, (err, stream) => {
+        campi.getImageAsStream({ timeout: Constants.campiDelay, width: 640, height: 480, rotation: Constants.campiRotation }, (err, stream) => {
             if (err) {
                 throw err;
             }

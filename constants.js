@@ -5,6 +5,8 @@ const greedLedPin = 16;
 const coolDownTime = 15000;
 const raspiCamRotation = 90;
 const campiRotation = 90;
+const raspiCamDelay = 1500;
+const campiDelay = 1;
 
 module.exports = {
     pirPin: pirPin,
@@ -13,5 +15,7 @@ module.exports = {
     greedLedPin, greedLedPin,
     coolDownTime, coolDownTime,
     raspiCamRotation: raspiCamRotation,
-    campiRotation: campiRotation
+    campiRotation: campiRotation,
+    raspiCamDelay: raspiCamDelay,
+    campiDelay: campiDelay
 }
