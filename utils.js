@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var time = require('time');
+var exec = require('child_process').exec;
 
 class Utils {
     static getImagesFromPhotosDir() {
@@ -23,6 +24,10 @@ class Utils {
 
     static round(value) {
         return Math.round(value * 100) / 100;
+    }
+
+    static shutDown(callback) {
+        exec('shutdown now', function (error, stdout, stderr) { callback(stdout); });
     }
 }
 
