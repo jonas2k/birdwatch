@@ -6,13 +6,12 @@ var PicProcessor = require('./picprocessor');
 var LedController = require('./ledcontroller');
 var Constants = require('./constants');
 
-var encoding = "jpg";
 var filename;
 
 var camera = new RaspiCam({
     mode: "photo",
     output: "./workdir/",
-    encoding: encoding,
+    encoding: Constants.encoding,
     timeout: Constants.raspiCamDelay,
     width: 1920,
     height: 1080,
@@ -31,7 +30,7 @@ class PicTaker extends EventEmitter {
     }
 
     takePicture() {
-        filename = Date.now() + ".jpg";
+        filename = Date.now() + "." + Constants.encoding;
         camera.set("output", "./workdir/" + filename);
         camera.start();
         return camera;
