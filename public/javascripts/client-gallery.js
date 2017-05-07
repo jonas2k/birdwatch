@@ -9,8 +9,12 @@ window.addEventListener('load', () => {
                         $('<img />').attr({ src: value })
                     )
                 ).append(
-                    $('<button />').attr({ id: value, value: value, class: "btn btn-xs twitterbutton", "data-image": value, "data-toggle": "modal", "data-target": "#tweetConfirmation" }).append(
-                        $('<img />').attr({ class: "twitterbuttonimage", src: "images/twitter.png" })
+                    $('<button />').attr({ id: value, value: value, class: "btn btn-xs gallerybutton", "data-image": value, "data-toggle": "modal", "data-target": "#tweetConfirmation" }).append(
+                        $('<img />').attr({ class: "gallerybuttonimage", src: "images/twitter.png" })
+                    )
+                    ).append(
+                    $('<button />').attr({ id: value, value: value, class: "btn btn-xs gallerybutton", "data-image": value, "data-toggle": "modal", "data-target": "#deleteConfirmation" }).append(
+                        $('<img />').attr({ class: "gallerybuttonimage", src: "images/delete.png" })
                     )
                     )
             )
@@ -23,9 +27,15 @@ window.addEventListener('load', () => {
 function setupModal() {
     $("#tweetConfirmation").on('show.bs.modal', function (event) {
         var image = $(event.relatedTarget).data('image');
-        $(this).find('#modalSendButton').off("click").click(function () {
+        $(this).find('#tweetSendButton').off("click").click(function () {
             var message = $(this).parent().prev().find('#tweetText').val();
             socket.emit("tweetPic", { image: image, message: message });
+        });
+    });
+    $("#deleteConfirmation").on('show.bs.modal', function (event) {
+        var image = $(event.relatedTarget).data('image');
+        $(this).find('#deleteProceedButton').off("click").click(function () {
+            socket.emit("deletePic", { image: image });
         });
     });
 

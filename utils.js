@@ -29,6 +29,11 @@ class Utils {
     static shutDown(callback) {
         exec('sudo shutdown now', function (error, stdout, stderr) { callback(stdout); });
     }
+
+    static deleteFile(file, callback) {
+        fs.unlink("./public/" + file, callback);
+        console.log("Deleted file at " + "./public/" + file);
+    }
 }
 
 module.exports = Utils;

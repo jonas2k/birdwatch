@@ -56,8 +56,8 @@ app.use('/takepicture', takepicture);
 
 //watcher
 const watcherCallback = () => {
-  var camera = picTaker.takePicture();
-  camera.once("processingDone", () => {
+  var timelapseCam = picTaker.takeTimelapse();
+  timelapseCam.once("processingDone", () => {
     app.settings.io.emit("RefreshGalleryView", Utils.getImagesFromPhotosDir());
   });
 };
@@ -78,7 +78,7 @@ io.on("connection", (socket) => {
     }
   });
   socket.on("savePicture", () => {
-    var camera = picTaker.takePicture();
+    var camera = picTaker.takeSinglePicture();
     camera.once("processingDone", (data) => {
       socket.emit("savePictureReturn", { filename: data.filename });
       io.emit("RefreshGalleryView", Utils.getImagesFromPhotosDir());
@@ -95,6 +95,11 @@ io.on("connection", (socket) => {
   socket.on("ShutDown", () => {
     Utils.shutDown((output) => {
       console.log(output);
+    });
+  })
+  socket.on("deletePic", (data) => {
+    Utils.deleteFile(data.image, () => {
+      io.emit("RefreshGalleryView", Utils.getImagesFromPhotosDir());
     });
   })
 });

@@ -5,7 +5,9 @@ const greedLedPin = 16;
 const coolDownTime = 15000;
 const raspiCamRotation = 90;
 const campiRotation = 90;
-const raspiCamDelay = 1100;
+const raspiCamDelay = 1000;
+const raspiCamTimelapseDelay = 2000;
+const raspiCamTimelapseInterval = 1000;
 const campiDelay = 1;
 const encoding  = "jpg";
 
@@ -18,6 +20,8 @@ module.exports = {
     raspiCamRotation: raspiCamRotation,
     campiRotation: campiRotation,
     raspiCamDelay: raspiCamDelay,
+    raspiCamTimelapseDelay: raspiCamTimelapseDelay,
+    raspiCamTimelapseInterval: raspiCamTimelapseInterval,
     campiDelay: campiDelay,
     encoding: encoding
 }
