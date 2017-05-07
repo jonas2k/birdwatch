@@ -5,7 +5,7 @@ block content
 	.jumbotron.container-fluid#gallery-container
 		each image in images
 			.col-sm-2.col-md-3.col-lg-3.text-center
-				a.thumbnail.nomargin(href=image)
+				a.thumbnail.nomargin(href=image, target="_blank")
 					img(src=image)
 				button.btn.btn-xs.gallerybutton(value=image data-image=image data-toggle="modal" data-target="#tweetConfirmation")
 					img.gallerybuttonimage(src="images/twitter.png")

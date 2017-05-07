@@ -5,7 +5,7 @@ window.addEventListener('load', () => {
         $.each(images, (index, value) => {
             $('#gallery-container').append(
                 $('<div />').attr({ class: 'col-sm-2 col-md-3 col-lg-3 text-center' }).append(
-                    $('<a />').attr({ href: value, class: "thumbnail nomargin" }).append(
+                    $('<a />').attr({ href: value, class: "thumbnail nomargin", target: "_blank" }).append(
                         $('<img />').attr({ src: value })
                     )
                 ).append(
