@@ -90,18 +90,19 @@ class PicTaker extends EventEmitter {
     takeTempPicture(callback) {
         campi.getImageAsStream({ timeout: Constants.campiDelay, width: 640, height: 480, rotation: Constants.campiRotation }, (err, stream) => {
             if (err) {
-                throw err;
+                console.log("Unable to take live picture. Camera seems busy.");
+                console.log(err);
+            } else {
+                const chunks = [];
+
+                stream.on("data", (chunk) => {
+                    chunks.push(chunk);
+                });
+
+                stream.on("end", () => {
+                    callback(Buffer.concat(chunks).toString("base64"));
+                });
             }
-
-            const chunks = [];
-
-            stream.on("data", (chunk) => {
-                chunks.push(chunk);
-            });
-
-            stream.on("end", () => {
-                callback(Buffer.concat(chunks).toString("base64"));
-            });
         });
     }
 }
