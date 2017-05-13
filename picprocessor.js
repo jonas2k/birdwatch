@@ -18,7 +18,7 @@ class PicProcessor extends EventEmitter {
             .drawText(30, 20, annotation, "SouthEast")
             .write("./public/photos/" + filename, (err) => {
                 if (err) {
-                    throw err;
+                    console.log("Unable to annotate picture: " + err);
                 }
                 if (doEmit) {
                     this.camera.emit("processingDone", { filename: filename });
